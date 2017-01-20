@@ -2,7 +2,10 @@
 using System.Collections;
 using UnityEngine.SceneManagement;
 
-public class Movement : MonoBehaviour 
+//Allowing networking
+using UnityEngine.Networking;
+
+public class Movement : NetworkBehaviour 
 {
 	public float rotate_speed = 85;
 	public float speed = 10;
@@ -41,13 +44,17 @@ public class Movement : MonoBehaviour
     // Update is called once per frame
 	void Update () 
 	{
+		//check for isLocalPlayer in the Update function, so that only the local player processes input.
+		if (!isLocalPlayer)
+		{
+			return;
+		}
 
-
-        Gun();
+		CmdGun();
         Grenade();
         //Fire ();
 		//Grenade ();
-		KeyboardInput ();
+		CmdKeyboardInput ();
 
 
 
@@ -71,16 +78,25 @@ public class Movement : MonoBehaviour
 	
 	}
 
+	//On Start the material will be set to blue to identify which gameobject belongs to the player 
+	public override void OnStartLocalPlayer()
+	{
+		GetComponent<MeshRenderer>().material.color = Color.blue;
+	}
 
 
-
-    void Gun()
+	[Command] // Command here indicates that the following function will be called by the client,but will be run on the server.
+    void CmdGun()//When making a networked command, the function name must being with "Cmd"
     {
         //Gun Code
         if (Input.GetButtonDown("PS4_R1"))
         {
             Instantiate(bullet, spawner.position, transform.rotation);
-            AudioSource.PlayClipAtPoint(Shoot, transform.position);
+
+			//Networking
+			NetworkServer.Spawn(bullet);//Spawn the bullet on the Clients
+            
+			AudioSource.PlayClipAtPoint(Shoot, transform.position);
             counter = 0;
         }
         counter += Time.deltaTime;
@@ -194,13 +210,20 @@ public class Movement : MonoBehaviour
 
     */
 
-	void KeyboardInput()
+	[Command]
+
+	void CmdKeyboardInput()
 	{
 		if (Input.GetKeyDown (KeyCode.Space)) 
 		{
 			Instantiate (bullet, spawner.position, transform.rotation);
+			//Spawn the bullet on the Clients
+			//Networking the bullet :)
+			NetworkServer.Spawn(bullet);
 			AudioSource.PlayClipAtPoint(Shoot,transform.position);
 			counter = 0;
+
+			Destroy (bullet, 2.0f);
 		}
 		counter += Time.deltaTime;
 	}
