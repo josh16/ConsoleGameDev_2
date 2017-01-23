@@ -14,7 +14,7 @@ public class Movement : NetworkBehaviour
 	//AudioFiles
 	public AudioClip Shoot;
 	public AudioClip hit;
-	public AudioClip BossHit;
+	//public AudioClip BossHit;
 
 	//Bullet Variables
 	public GameObject bullet;
@@ -44,17 +44,23 @@ public class Movement : NetworkBehaviour
     // Update is called once per frame
 	void Update () 
 	{
+		
 		//check for isLocalPlayer in the Update function, so that only the local player processes input.
 		if (!isLocalPlayer)
 		{
 			return;
 		}
 
+		//Firing Gun Function/ Keyboard and Controller input.
 		CmdGun();
-        Grenade();
+		CmdKeyboardInput ();
+
+
+        
+		CmdGrenade();
         //Fire ();
 		//Grenade ();
-		CmdKeyboardInput ();
+
 
 
 
@@ -76,6 +82,8 @@ public class Movement : NetworkBehaviour
 		transform.Rotate (new Vector3 (0, rStickX, 0), rotate_speed * Time.deltaTime);
 		//movement Code
 	
+
+
 	}
 
 	//On Start the material will be set to blue to identify which gameobject belongs to the player 
@@ -95,7 +103,8 @@ public class Movement : NetworkBehaviour
 
 			//Networking
 			NetworkServer.Spawn(bullet);//Spawn the bullet on the Clients
-            
+			Destroy(bullet,2.0f);
+
 			AudioSource.PlayClipAtPoint(Shoot, transform.position);
             counter = 0;
         }
@@ -104,8 +113,8 @@ public class Movement : NetworkBehaviour
       
     }
 
-
-    void Grenade()
+	[Command]
+    void CmdGrenade()
     {
         //Grenade code
         if (Input.GetButtonDown("PS4_L1"))
@@ -133,14 +142,14 @@ public class Movement : NetworkBehaviour
 			Debug.Log("Zambie hit!!");
 		}
 	
-		if (other.gameObject.CompareTag ("Boss")) 
+		/*if (other.gameObject.CompareTag ("Boss")) 
 		{
 			
 			AudioSource.PlayClipAtPoint(BossHit,transform.position);
 			Debug.Log("Boss hit!!");
 		}
 
-
+		
 
 		if (other.gameObject.CompareTag ("portal1")) 
 		{
@@ -152,7 +161,7 @@ public class Movement : NetworkBehaviour
 			SceneManager.LoadScene ("Scene");
 		}
 
-	
+	*/
 	
 	}
 
@@ -211,7 +220,6 @@ public class Movement : NetworkBehaviour
     */
 
 	[Command]
-
 	void CmdKeyboardInput()
 	{
 		if (Input.GetKeyDown (KeyCode.Space)) 
@@ -220,10 +228,11 @@ public class Movement : NetworkBehaviour
 			//Spawn the bullet on the Clients
 			//Networking the bullet :)
 			NetworkServer.Spawn(bullet);
+			Destroy (bullet, 2.0f);
 			AudioSource.PlayClipAtPoint(Shoot,transform.position);
 			counter = 0;
 
-			Destroy (bullet, 2.0f);
+
 		}
 		counter += Time.deltaTime;
 	}
