@@ -42,6 +42,10 @@ public class BulletDirection : MonoBehaviour
 	
 	}
 
+	void OnCollisionEnter()
+	{
+		Destroy(gameObject);
+	}
 
 
 
