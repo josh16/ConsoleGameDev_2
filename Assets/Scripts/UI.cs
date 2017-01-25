@@ -4,8 +4,12 @@ using System.Collections;
 using UnityEngine.UI;
 // scene management is the new way for the changing of scenes. 
 using UnityEngine.SceneManagement;
+using UnityEngine.Networking;
 
-public class UI : MonoBehaviour
+
+
+
+public class UI :  NetworkBehaviour
 {
 
     
@@ -23,7 +27,9 @@ public class UI : MonoBehaviour
 
     // this is the health being shown to the player
     public Text m_healthText;
-    public float m_health = 100f;
+    
+	[SyncVar]
+	public float m_health = 100f;
 
 
 
@@ -68,7 +74,12 @@ public class UI : MonoBehaviour
     {
 		if(other.gameObject.CompareTag("Enemy")||(other.gameObject.CompareTag("Boss")))
         {
-            // if the health is greater than 0 , and not equal or less than zero....... take health from player
+			if (!isServer)
+			{
+				return;
+			}
+
+			// if the health is greater than 0 , and not equal or less than zero....... take health from player
             if (m_tempHealth > 0 && (m_tempHealth != 0 || m_tempHealth < 0))
             {
                 // updating the health bar number
