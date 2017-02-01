@@ -32,31 +32,6 @@ public class UI :  NetworkBehaviour
 	public float m_health = 100f;
 
 
-
-    // sounds being declared here
-    // when the player grabs the pickups to gain health    
-    // for the Awake example    
-
-    //private AudioSource soundHealthClip;
-    //public AudioClip healthClip;
-
-
-    // audio source is where the sound is playing from, where u can change things
-    // the clip is the actual clip thats being played
-
-    /*
-        void Awake()
-        {
-            // sounds being set here so the sound is recognized
-            // just like the ui in the start    
-            //example........
-
-            soundHealthClip = GetComponent<AudioSource>();
-        }
-    */
-
-
-
     void Start()
     {
         // this finds the canvas, then looks for something called health bar

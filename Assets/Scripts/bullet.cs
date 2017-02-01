@@ -4,13 +4,22 @@ using UnityEngine;
 
 public class bullet : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
+	void OnCollisionEnter(Collision collision)
+	{
+
+
+
+		var hit = collision.gameObject; // Collides with gameobject
+		var health = hit.GetComponent<PlayerHealth> ();// calling the PlayerHealth script
+
+		//Taking Damage
+		if (health != null) {
+
+			health.TakeDamage (10);
+		}
+
+
+		Destroy (gameObject);//Destroy the gameobject
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
 }
