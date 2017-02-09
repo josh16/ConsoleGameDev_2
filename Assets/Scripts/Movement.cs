@@ -16,6 +16,12 @@ public class Movement : NetworkBehaviour
 	public AudioClip hit;
 	//public AudioClip BossHit;
 
+
+
+	//Camera Reference
+	public Camera cam;
+
+
 	//bulletPrefab Variables
 	public GameObject bulletPrefab;
 	public Transform bulletSpawn;
@@ -37,21 +43,46 @@ public class Movement : NetworkBehaviour
 	void Start () 
 	{
 		rb = GetComponent<Rigidbody> ();
+
+
+		//
+		if (isLocalPlayer) 
+		{
+
+			return;
+		}
+
+		cam.enabled = false; 
+	
+	
+	
 	}
 	
     // Update is called once per frame
 	void Update () 
 	{
 		
+
 		//check for isLocalPlayer in the Update function, so that only the local player processes input.
 		if (!isLocalPlayer)
 		{
 			return;
+		
+
 		}
 
 		if (Input.GetKeyDown (KeyCode.Space)) {
 			CmdKeyboardInput();
 		}
+
+
+
+
+
+
+		//Fix camera 
+
+
 
 
 		//Firing Gun Function/ Keyboard and Controller input.
