@@ -138,26 +138,6 @@ public class Movement : NetworkBehaviour
 			Debug.Log("Zambie hit!!");
 		}
 	
-		/*if (other.gameObject.CompareTag ("Boss")) 
-		{
-			
-			AudioSource.PlayClipAtPoint(BossHit,transform.position);
-			Debug.Log("Boss hit!!");
-		}
-
-		
-
-		if (other.gameObject.CompareTag ("portal1")) 
-		{
-			SceneManager.LoadScene("Boss");
-		}
-
-		if(other.gameObject.CompareTag("portal2"))
-		{
-			SceneManager.LoadScene ("Scene");
-		}
-
-	*/
 	
 	}
 
