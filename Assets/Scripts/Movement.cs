@@ -21,7 +21,7 @@ public class Movement : NetworkBehaviour
 	public Transform bulletSpawn;
 	public float delayTime = 1.0f;
 	private float counter = 0;
-
+	public float bulletSpeed;
 
 	//Grenade Variables
 	public Transform grenadeSpawn;
@@ -138,26 +138,6 @@ public class Movement : NetworkBehaviour
 			Debug.Log("Zambie hit!!");
 		}
 	
-		/*if (other.gameObject.CompareTag ("Boss")) 
-		{
-			
-			AudioSource.PlayClipAtPoint(BossHit,transform.position);
-			Debug.Log("Boss hit!!");
-		}
-
-		
-
-		if (other.gameObject.CompareTag ("portal1")) 
-		{
-			SceneManager.LoadScene("Boss");
-		}
-
-		if(other.gameObject.CompareTag("portal2"))
-		{
-			SceneManager.LoadScene ("Scene");
-		}
-
-	*/
 	
 	}
 
@@ -226,7 +206,7 @@ public class Movement : NetworkBehaviour
 				bulletSpawn.rotation);
 
 		// Add velocity to the bullet
-			bullet.GetComponent<Rigidbody>().velocity = bullet.transform.forward * 6;
+		bullet.GetComponent<Rigidbody>().velocity = bullet.transform.forward * bulletSpeed;
 
 			NetworkServer.Spawn(bullet);
 
