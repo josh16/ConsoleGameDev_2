@@ -1,13 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour {
 
 	//Health variables
 	public const int maxHealth = 100;
-
 	public int currentHealth = maxHealth;
+
+	public RectTransform healthbar;
 
 
 
@@ -17,8 +19,9 @@ public class PlayerHealth : MonoBehaviour {
 
 		if (currentHealth <= 0) {
 			currentHealth = 0;
+			Debug.Log ("hit!");
 
-			Debug.Log("Oh no! i'm Dead!!");
+			healthbar.sizeDelta = new Vector2 (currentHealth, healthbar.sizeDelta.y);
 			//Code right here will destroy the player
 		}
 
