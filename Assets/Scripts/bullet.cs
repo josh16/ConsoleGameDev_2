@@ -6,9 +6,6 @@ public class bullet : MonoBehaviour {
 
 	void OnCollisionEnter(Collision collision)
 	{
-
-
-
 		var hit = collision.gameObject; // Collides with gameobject
 		var health = hit.GetComponent<PlayerHealth> ();// calling the PlayerHealth script
 
@@ -16,6 +13,7 @@ public class bullet : MonoBehaviour {
 		if (health != null) {
 
 			health.TakeDamage (10);
+			
 		}
 
 

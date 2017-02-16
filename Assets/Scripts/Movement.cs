@@ -75,15 +75,7 @@ public class Movement : NetworkBehaviour
 			CmdKeyboardInput();
 		}
 
-
-
-
-
-
-		//Fix camera 
-
-
-
+	
 
 		//Firing Gun Function/ Keyboard and Controller input.
 		//CmdGun();
