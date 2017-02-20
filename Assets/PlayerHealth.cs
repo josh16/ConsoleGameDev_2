@@ -9,10 +9,9 @@ public class PlayerHealth : NetworkBehaviour {
 	//Health variables
 	public const int maxHealth = 100;
 
+
 	[SyncVar(hook = "OnChangeHealth")]
-
 	public int currentHealth = maxHealth;
-
 	public RectTransform healthbar;
 
 
@@ -22,20 +21,19 @@ public class PlayerHealth : NetworkBehaviour {
 		if (!isServer)
 			return;
 
-		currentHealth -= maxHealth;
+		currentHealth -= amount;
 
 		if (currentHealth <= 0) {
+
 			currentHealth = 0;
 
 			currentHealth = maxHealth;
 
 			// called on the Server, but invoked on the Clients
 			RpcRespawn();
-
 		}
 
 	}
-
 
 	//HealthBar Function	
 	void OnChangeHealth(int currentHealth )
@@ -43,9 +41,7 @@ public class PlayerHealth : NetworkBehaviour {
 		healthbar.sizeDelta = new Vector2 (currentHealth, healthbar.sizeDelta.y);
 
 	}
-
-
-
+		
 
 	//RESPAWN FUNCTION
 
@@ -63,20 +59,11 @@ public class PlayerHealth : NetworkBehaviour {
 
 
 
+	void Start()
+	{
 
-	// Use this for initialization
-	void Start () {
-		
+		currentHealth = maxHealth;
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
-
-
-
 
 
 
