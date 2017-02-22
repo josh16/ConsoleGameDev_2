@@ -10,13 +10,12 @@ public class Movement : NetworkBehaviour
 	public float rotate_speed = 85;
 	public float speed = 10;
 	Rigidbody rb;
+	public float rotationSpeed = 10;
 
 	//AudioFiles
 	public AudioClip Shoot;
 	public AudioClip hit;
 	//public AudioClip BossHit;
-
-
 
 	//Camera Reference
 	public Camera cam;
@@ -244,7 +243,9 @@ public class Movement : NetworkBehaviour
 			//counter = 0;
 
 
-		
+
+		//Rotate the player
+
 		//counter += Time.deltaTime;
 	}
 
