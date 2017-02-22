@@ -10,11 +10,16 @@ public class Movement : NetworkBehaviour
 	public float rotate_speed = 85;
 	public float speed = 10;
 	Rigidbody rb;
+	public float rotationSpeed = 10;
 
 	//AudioFiles
 	public AudioClip Shoot;
 	public AudioClip hit;
 	//public AudioClip BossHit;
+
+	//Camera Reference
+	public Camera cam;
+
 
 	//bulletPrefab Variables
 	public GameObject bulletPrefab;
@@ -37,22 +42,39 @@ public class Movement : NetworkBehaviour
 	void Start () 
 	{
 		rb = GetComponent<Rigidbody> ();
+
+
+		//
+		if (isLocalPlayer) 
+		{
+
+			return;
+		}
+
+		cam.enabled = false; 
+	
+	
+	
 	}
 	
     // Update is called once per frame
 	void Update () 
 	{
 		
+
 		//check for isLocalPlayer in the Update function, so that only the local player processes input.
 		if (!isLocalPlayer)
 		{
 			return;
+		
+
 		}
 
 		if (Input.GetKeyDown (KeyCode.Space)) {
 			CmdKeyboardInput();
 		}
 
+	
 
 		//Firing Gun Function/ Keyboard and Controller input.
 		//CmdGun();
@@ -221,7 +243,9 @@ public class Movement : NetworkBehaviour
 			//counter = 0;
 
 
-		
+
+		//Rotate the player
+
 		//counter += Time.deltaTime;
 	}
 
