@@ -35,6 +35,7 @@ public class Movement : NetworkBehaviour
 	private float GrenadeCounter = 1.0f;
 	public float delayGrenadeTime = 5.0f;
 	public float numOfGrenades;
+    public float ROF = 0.1f;
 
 
 	//Josh's Script
@@ -72,13 +73,15 @@ public class Movement : NetworkBehaviour
 			
 
 		if (Input.GetKeyDown (KeyCode.Space)) {
-			CmdKeyboardInput();
-
-
+            InvokeRepeating("CmdKeyboardInput", 0.001f, ROF);
 		}
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            CancelInvoke("CmdKeyboardInput");
+        }
 
 
-		if (Input.GetButtonDown ("PS4_R1")) {
+        if (Input.GetButtonDown ("PS4_R1")) {
 
 			CmdGun ();
 		}
