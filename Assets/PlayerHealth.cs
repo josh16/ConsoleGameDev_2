@@ -8,6 +8,10 @@ public class PlayerHealth : NetworkBehaviour {
 
 	//Health variables
 	public const int maxHealth = 100;
+	public const int healthPack = 20;
+
+	//Health Audio
+	public AudioClip medicalKit;
 
 
 	[SyncVar(hook = "OnChangeHealth")]
@@ -42,6 +46,21 @@ public class PlayerHealth : NetworkBehaviour {
 
 	}
 		
+
+	//Health Pickup Code
+
+	void OnTriggerEnter(Collider other)
+	{
+		if(other.gameObject.tag == "healthPickup" && currentHealth < maxHealth)
+			{
+				currentHealth += healthPack;
+			AudioSource.PlayClipAtPoint (medicalKit, transform.position);
+				
+			}
+	}
+
+
+
 
 	//RESPAWN FUNCTION
 
