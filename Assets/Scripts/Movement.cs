@@ -82,7 +82,11 @@ public class Movement : NetworkBehaviour
 
         if (Input.GetButtonDown ("PS4_R1")) {
 
-			CmdGun ();
+			InvokeRepeating("CmdGun", 0.001f, ROF);
+		}
+		if (Input.GetButtonUp ("PS4_R1")) {
+
+			CancelInvoke("CmdGun");
 		}
 
 
