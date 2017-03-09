@@ -71,7 +71,6 @@ public class Movement : NetworkBehaviour
 
 		}
 			
-
 		if (Input.GetKeyDown (KeyCode.Space)) {
             InvokeRepeating("CmdKeyboardInput", 0.001f, ROF);
 		}
@@ -284,6 +283,41 @@ public class Movement : NetworkBehaviour
 
 
     */
+
+
+
+
+	public GameObject hitObject;
+
+
+	//Pick up GameObjects
+	void PickUpObject()
+	{
+
+		/*
+		RaycastHit hit;
+
+		if (Input.GetKey (KeyCode.P)) {
+
+
+
+			if(Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),hit))
+				{
+				hitObject = hit.collider.gameObject;
+				hitObject.transform.parent = gameObject.transform;
+
+				}
+
+			//Pick up the game object here
+		}
+
+		*/
+	}
+
+
+
+
+
 
 	[Command]
 	void CmdKeyboardInput()
