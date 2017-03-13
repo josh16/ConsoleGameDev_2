@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.AI;
 
 public class AI : MonoBehaviour
 {
+	/*NavMeshAgent agent;
     public Transform target;
     public int moveSpeed;
     public int rotationSpeed;
@@ -13,6 +15,7 @@ public class AI : MonoBehaviour
 	void Start()
     {
         target = GameObject.Find("Player").transform;
+		agent = GetComponent<NavMeshAgent> ();
     }
 
     void Update()
@@ -32,5 +35,28 @@ public class AI : MonoBehaviour
                 * moveSpeed * Time.deltaTime;
         }
         //rb.velocity = Vector3.zero;
-    }
+    }*/
+	NavMeshAgent agent;
+	public Transform target;
+
+	void Start(){
+		agent = GetComponent<NavMeshAgent> ();
+		//GameObject Target = GameObject.FindGameObjectWithTag("Player");
+		//target = Target.transform;
+	}
+
+	void Update()
+	{
+		GameObject Target = GameObject.FindGameObjectWithTag("Player");
+		target = Target.transform;
+
+		if (target != null) {
+			agent.SetDestination (target.position);
+
+		}
+
+
+	}
+
+
 }

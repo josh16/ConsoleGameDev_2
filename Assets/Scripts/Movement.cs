@@ -29,11 +29,13 @@ public class Movement : NetworkBehaviour
 	public float bulletSpeed;
 
 	//Grenade Variables
+	public GameObject grenadePrefab;
 	public Transform grenadeSpawn;
 	public float grenadeSpeed;
 	private float GrenadeCounter = 1.0f;
 	public float delayGrenadeTime = 5.0f;
 	public float numOfGrenades;
+    public float ROF = 0.1f;
 
 
 	//Josh's Script
@@ -52,8 +54,7 @@ public class Movement : NetworkBehaviour
 		}
 
 		cam.enabled = false; 
-	
-	
+
 	
 	}
 	
@@ -66,90 +67,160 @@ public class Movement : NetworkBehaviour
 		if (!isLocalPlayer)
 		{
 			return;
-		
+
 
 		}
-
+			
 		if (Input.GetKeyDown (KeyCode.Space)) {
-			CmdKeyboardInput();
+            InvokeRepeating("CmdKeyboardInput", 0.001f, ROF);
+		}
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            CancelInvoke("CmdKeyboardInput");
+        }
+
+
+        if (Input.GetButtonDown ("PS4_R1")) {
+
+			InvokeRepeating("CmdGun", 0.001f, ROF);
+		}
+		if (Input.GetButtonUp ("PS4_R1")) {
+
+			CancelInvoke("CmdGun");
 		}
 
-	
 
-		//Firing Gun Function/ Keyboard and Controller input.
-		//CmdGun();
-		//CmdGrenade();
-        //Fire ();
-		//Grenade ();
 
-		//Movement Code
+		if (Input.GetButtonDown ("PS4_L1")) {
+
+			CmdGrenade ();
+		}
+
+		//if(isLocalPlayer)
+			CmdgameController();
+
+
 		float hAxis = Input.GetAxis ("Horizontal");
-		float vAxis = Input.GetAxis ("Vertical");
-		 
-		//The sticks
+		float vAxis = Input.GetAxis ("Vertical");	
+
+
+		// Controller Analog sticks Code
+		/*
+
 		float rStickX = Input.GetAxis("PS4_RightStickX");
 
 
 		Vector3 movement = transform.TransformDirection (new Vector3 (hAxis, 0, vAxis) * speed * Time.deltaTime);
-
 
 		rb.MovePosition (transform.position + movement);
 
 		Quaternion rotation = Quaternion.Euler (new Vector3 (0, rStickX, 0) * rotate_speed * Time.deltaTime); 
 
 		transform.Rotate (new Vector3 (0, rStickX, 0), rotate_speed * Time.deltaTime);
-		//movement Code
-	
 
+	
+	*/
+	
+	
 	}
 
+	[Command]
+	void CmdgameController()
+	{
+
+		if (isLocalPlayer) 
+		{
+
+			//Movement Code
+			float hAxis = Input.GetAxis ("Horizontal");
+			float vAxis = Input.GetAxis ("Vertical");
+
+			float rStickX = Input.GetAxis("PS4_RightStickX");
+
+
+			Vector3 movement = transform.TransformDirection (new Vector3 (hAxis, 0, vAxis) * speed * Time.deltaTime);
+
+			rb.MovePosition (transform.position + movement);
+
+			Quaternion rotation = Quaternion.Euler (new Vector3 (0, rStickX, 0) * rotate_speed * Time.deltaTime); 
+
+			transform.Rotate (new Vector3 (0, rStickX, 0), rotate_speed * Time.deltaTime);
+
+		}
+
+
+	}
+		
 
 	//On Start the material will be set to blue to identify which gameobject belongs to the player 
 	public override void OnStartLocalPlayer()
 	{
 		GetComponent<MeshRenderer>().material.color = Color.red;
 	}
-
-	/*
+	
+	//Firing Weapon Code
 	[Command] // Command here indicates that the following function will be called by the client,but will be run on the server.
     void CmdGun() //When making a networked command, the function name must being with "Cmd"
     {
-        //Gun Code
-        if (Input.GetButtonDown("PS4_R1"))
-        {
-			Instantiate(bulletPrefab, bulletSpawn, transform.rotation);
+        
+        //if (Input.GetButtonDown("PS4_R1"))
+        //{
+			
+			var bullet = (GameObject)Instantiate(
+				bulletPrefab,
+				bulletSpawn.position,
+				bulletSpawn.rotation);
 
-			//Networking
-			NetworkServer.Spawn(bulletPrefab);//Spawn the bulletPrefab on the Clients
+
+			bullet.GetComponent<Rigidbody>().velocity = bullet.transform.forward * bulletSpeed;
+
+			NetworkServer.Spawn(bullet);
+	
 			Destroy(bulletPrefab,2.0f);
 
 			AudioSource.PlayClipAtPoint(Shoot, transform.position);
             counter = 0;
-        }
+       // }
         counter += Time.deltaTime;
 
-      
-    }
+      }
 
+
+	
 	[Command]
     void CmdGrenade()
     {
         //Grenade code
-        if (Input.GetButtonDown("PS4_L1"))
-        {
-			Rigidbody instantiatedgrenade = Instantiate(grenade, grenadeSpawn, transform.rotation) as Rigidbody;
-            instantiatedgrenade.velocity = transform.TransformDirection(new Vector3(0, 0, grenadeSpeed));
+        //if (Input.GetButtonDown("PS4_L1"))
+        //{
+			//Rigidbody instantiatedgrenade = Instantiate(grenade, grenadeSpawn, transform.rotation) as Rigidbody;
+            //instantiatedgrenade.velocity = transform.TransformDirection(new Vector3(0, 0, grenadeSpeed));
 
-            numOfGrenades--;
+			var grenade = (GameObject)Instantiate(
+				grenadePrefab,
+				grenadeSpawn.position,
+				grenadeSpawn.rotation);
+
+			grenade.GetComponent<Rigidbody>().velocity = grenade.transform.forward * grenadeSpeed;
+
+			NetworkServer.Spawn(grenade);
+
+			Destroy(grenadePrefab,2.0f);
+
+			numOfGrenades--;
 
             GrenadeCounter = 0;
 
             Debug.Log("Throw grenade!!");
-        }
+       // }
         delayGrenadeTime += Time.deltaTime;
     }
     
-	*/
+	
+
+
+	//Trigger Codes
+
 	void OnTriggerEnter(Collider other)
 	{
 		if (other.gameObject.CompareTag ("Enemy")) 
@@ -217,11 +288,46 @@ public class Movement : NetworkBehaviour
 
     */
 
+
+
+
+	public GameObject hitObject;
+
+
+	//Pick up GameObjects
+	void PickUpObject()
+	{
+
+		/*
+		RaycastHit hit;
+
+		if (Input.GetKey (KeyCode.P)) {
+
+
+
+			if(Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),hit))
+				{
+				hitObject = hit.collider.gameObject;
+				hitObject.transform.parent = gameObject.transform;
+
+				}
+
+			//Pick up the game object here
+		}
+
+		*/
+	}
+
+
+
+
+
+
 	[Command]
 	void CmdKeyboardInput()
 	{
-			//Instantiate (bulletPrefab, bulletSpawn, transform.rotation);
-			// Create the Bullet from the Bullet Prefab
+		
+		// Create the Bullet from the Bullet Prefab
 			var bullet = (GameObject)Instantiate(
 				bulletPrefab,
 				bulletSpawn.position,
@@ -238,15 +344,10 @@ public class Movement : NetworkBehaviour
 			//Spawn the bulletPrefab on the Clients
 			//Networking the bulletPrefab :)
 
-			//Destroy (bulletPrefab, 2.0f);
 			AudioSource.PlayClipAtPoint(Shoot,transform.position);
 			//counter = 0;
 
 
-
-		//Rotate the player
-
-		//counter += Time.deltaTime;
 	}
 
 
