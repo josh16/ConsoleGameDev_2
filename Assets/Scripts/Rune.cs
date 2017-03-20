@@ -5,7 +5,6 @@ using UnityEngine;
 public class Rune : MonoBehaviour
 {
 
-
     // Spawner
     [SerializeField]
     private GameObject m_runeSpawner;
@@ -53,6 +52,7 @@ public class Rune : MonoBehaviour
 	private void Start()
 	{
 		SpawnRune();
+
 	}
 
     private void Update()
@@ -101,7 +101,7 @@ public class Rune : MonoBehaviour
         {
             Destroy(m_rune1);
             m_runeCounter++;
-            Debug.Log("Rune picked up!!");
+          
 			Debug.Log (m_runeCounter);
             m_isRunePickedUp = true;
 			StopCoroutine (RuneSpawnCoroutine());
@@ -109,6 +109,9 @@ public class Rune : MonoBehaviour
 			//m_isSpawned = true;
         }
     }
+
+
+
 
 
 
