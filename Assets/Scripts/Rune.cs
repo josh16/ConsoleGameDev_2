@@ -36,8 +36,7 @@ public class Rune : MonoBehaviour
     // bool check to see if rune spawned
     public bool m_isSpawned = true;
 
-    // when rune is picked up
-    public bool m_isRunePickedUp = false;
+    
 
     // when placed at the rune spot
     public bool m_isRunePlaced = false;
@@ -55,18 +54,14 @@ public class Rune : MonoBehaviour
 
 	}
 
-    private void Update()
-    {
-       
-
-    }
-
+ 
 
     private IEnumerator RuneSpawnCoroutine()
     {
 
 		while(m_isSpawned)
         {
+			Debug.Log ("rune spawned");
             // creating object
             GameObject rune = Instantiate(m_rune1) as GameObject;
 
@@ -99,21 +94,12 @@ public class Rune : MonoBehaviour
     {
         if(other.gameObject.CompareTag ("Player"))
         {
-            Destroy(m_rune1);
+			Debug.Log ("Stopped spawning");
             m_runeCounter++;
-          
-			Debug.Log (m_runeCounter);
-            m_isRunePickedUp = true;
 			StopCoroutine (RuneSpawnCoroutine());
-            //m_isRuneActive = false;
-			//m_isSpawned = true;
+        
         }
     }
-
-
-
-
-
 
 
 
