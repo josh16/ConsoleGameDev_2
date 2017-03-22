@@ -40,7 +40,13 @@ public class Movement : NetworkBehaviour
 	private float GrenadeCounter = 1.0f;
 	//public GUIText grenadeText;
 
-	
+
+	// rune counter
+	public int m_runeCounter;
+
+	public Text m_runeText;
+
+
 	public float delayGrenadeTime = 5.0f;
 	public float numOfGrenades;
     public float ROF = 0.1f;
@@ -49,7 +55,8 @@ public class Movement : NetworkBehaviour
 	void Start () 
 	{
 		rb = GetComponent<Rigidbody> ();
-		GrenadeCounter = 5;
+
+		m_runeText = GameObject.Find("Canvas").transform.FindChild ("runetext").GetComponent<Text> ();
 
 
 		if (isLocalPlayer) 
@@ -66,11 +73,7 @@ public class Movement : NetworkBehaviour
     // Update is called once per frame
 	void Update () 
 	{
-
-
-		//Grenade Number on UI
-		//grenadeText.text = "Grenades: " + GrenadeCounter;
-
+		
 		//check for isLocalPlayer in the Update function, so that only the local player processes input.
 		if (!isLocalPlayer)
 		{
@@ -208,22 +211,34 @@ public class Movement : NetworkBehaviour
 			Debug.Log("Zambie hit!!");
 		}
 	
+
+		if(other.gameObject.CompareTag("Rune"))
+		{
+			
+			Destroy (other.gameObject);
+			m_runeCounter++;
+
+			m_runeText.text = m_runeCounter.ToString ("f0");
+
+			if(m_runeCounter == 3)
+			{
+				Debug.Log ("all runes collected");
+				// transition to next scene
+				//SceneManager.LoadScene("");
+				// scene name goes inside the ""
+			}
+
+
+		}
+
+
+
+
+
 	
 	}
 
 
-	/*
-	public GameObject hitObject;
-
-
-	//Pick up GameObjects
-	void PickUpObject()
-	{
-
-
-	}
-
-*/
 
 
 	[Command]
