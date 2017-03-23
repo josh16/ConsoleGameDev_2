@@ -1,16 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 //Allowing networking
 using UnityEngine.Networking;
 
 public class Movement : NetworkBehaviour 
 {
-	public float rotate_speed = 85;
+
+
+	public float rotate_speed = 100.0f;
 	public float speed = 10;
 	Rigidbody rb;
-	public float rotationSpeed = 10;
+	public float rotationSpeed = 20.0f;
 
 	//AudioFiles
 	public AudioClip Shoot;
@@ -32,21 +35,30 @@ public class Movement : NetworkBehaviour
 	public GameObject grenadePrefab;
 	public Transform grenadeSpawn;
 	public float grenadeSpeed;
+
+	//Text Variables
 	private float GrenadeCounter = 1.0f;
+	//public GUIText grenadeText;
+
+
+	// rune counter
+	public int m_runeCounter;
+
+	public Text m_runeText;
+
+
 	public float delayGrenadeTime = 5.0f;
 	public float numOfGrenades;
     public float ROF = 0.1f;
-
-
-	//Josh's Script
 
 	// Use this for initialization
 	void Start () 
 	{
 		rb = GetComponent<Rigidbody> ();
 
+		m_runeText = GameObject.Find("Canvas").transform.FindChild ("runetext").GetComponent<Text> ();
 
-		//
+
 		if (isLocalPlayer) 
 		{
 
@@ -62,12 +74,10 @@ public class Movement : NetworkBehaviour
 	void Update () 
 	{
 		
-
 		//check for isLocalPlayer in the Update function, so that only the local player processes input.
 		if (!isLocalPlayer)
 		{
 			return;
-
 
 		}
 			
@@ -82,7 +92,11 @@ public class Movement : NetworkBehaviour
 
         if (Input.GetButtonDown ("PS4_R1")) {
 
-			CmdGun ();
+			InvokeRepeating("CmdGun", 0.001f, ROF);
+		}
+		if (Input.GetButtonUp ("PS4_R1")) {
+
+			CancelInvoke("CmdGun");
 		}
 
 
@@ -100,23 +114,6 @@ public class Movement : NetworkBehaviour
 		float vAxis = Input.GetAxis ("Vertical");	
 
 
-		// Controller Analog sticks Code
-		/*
-
-		float rStickX = Input.GetAxis("PS4_RightStickX");
-
-
-		Vector3 movement = transform.TransformDirection (new Vector3 (hAxis, 0, vAxis) * speed * Time.deltaTime);
-
-		rb.MovePosition (transform.position + movement);
-
-		Quaternion rotation = Quaternion.Euler (new Vector3 (0, rStickX, 0) * rotate_speed * Time.deltaTime); 
-
-		transform.Rotate (new Vector3 (0, rStickX, 0), rotate_speed * Time.deltaTime);
-
-	
-	*/
-	
 	
 	}
 
@@ -140,7 +137,7 @@ public class Movement : NetworkBehaviour
 
 			Quaternion rotation = Quaternion.Euler (new Vector3 (0, rStickX, 0) * rotate_speed * Time.deltaTime); 
 
-			transform.Rotate (new Vector3 (0, rStickX, 0), rotate_speed * Time.deltaTime);
+			transform.Rotate (new Vector3 (0, rStickX, 0), rotate_speed * 1.3f *  Time.deltaTime);
 
 		}
 
@@ -158,10 +155,7 @@ public class Movement : NetworkBehaviour
 	[Command] // Command here indicates that the following function will be called by the client,but will be run on the server.
     void CmdGun() //When making a networked command, the function name must being with "Cmd"
     {
-        
-        //if (Input.GetButtonDown("PS4_R1"))
-        //{
-			
+     
 			var bullet = (GameObject)Instantiate(
 				bulletPrefab,
 				bulletSpawn.position,
@@ -176,7 +170,6 @@ public class Movement : NetworkBehaviour
 
 			AudioSource.PlayClipAtPoint(Shoot, transform.position);
             counter = 0;
-       // }
         counter += Time.deltaTime;
 
       }
@@ -186,12 +179,6 @@ public class Movement : NetworkBehaviour
 	[Command]
     void CmdGrenade()
     {
-        //Grenade code
-        //if (Input.GetButtonDown("PS4_L1"))
-        //{
-			//Rigidbody instantiatedgrenade = Instantiate(grenade, grenadeSpawn, transform.rotation) as Rigidbody;
-            //instantiatedgrenade.velocity = transform.TransformDirection(new Vector3(0, 0, grenadeSpeed));
-
 			var grenade = (GameObject)Instantiate(
 				grenadePrefab,
 				grenadeSpawn.position,
@@ -203,12 +190,9 @@ public class Movement : NetworkBehaviour
 
 			Destroy(grenadePrefab,2.0f);
 
-			numOfGrenades--;
+			//numOfGrenades--;
+			GrenadeCounter--;
 
-            GrenadeCounter = 0;
-
-            Debug.Log("Throw grenade!!");
-       // }
         delayGrenadeTime += Time.deltaTime;
     }
     
@@ -227,94 +211,32 @@ public class Movement : NetworkBehaviour
 			Debug.Log("Zambie hit!!");
 		}
 	
+
+		if(other.gameObject.CompareTag("Rune"))
+		{
+			
+			Destroy (other.gameObject);
+			m_runeCounter++;
+
+			m_runeText.text = m_runeCounter.ToString ("f0");
+
+			if(m_runeCounter == 3)
+			{
+				Debug.Log ("all runes collected");
+				// transition to next scene
+				//SceneManager.LoadScene("");
+				// scene name goes inside the ""
+			}
+
+
+		}
+
+
+
+
+
 	
 	}
-
-	//Dodge Mechanic input
-
-
-
-    /*
-    void Fire()
-
-    {
-		//Shooting Code (R2 for PS4)
-		float triggerAxis = Input.GetAxis("PS4_RTrigger");
-
-		if (triggerAxis != 0 && counter > delayTime) {
-			Instantiate (bulletPrefab, spawbulletSpawnition, transform.rotation);
-			AudioSource.PlayClipAtPoint(Shoot,transform.position);
-			counter = 0;
-
-		} 
-
-		else 
-		{
-			triggerAxis = 0;
-		}
-		counter += Time.deltaTime;
-
-
-    }
-
-	
-
-    void Grenade ()
-	{
-		float triggerAxis = Input.GetAxis("PS4_LTrigger");
-
-		if (triggerAxis != 0 && counter > delayGrenadeTime) 
-		{
-			Rigidbody instantiatedgrenade = Instantiate (grenade, grenadeSpawbulletSpawnition, transform.rotation) as Rigidbody;
-			instantiatedgrenade.velocity = transform.TransformDirection (new Vector3 (0, 0, -grenadeSpeed));
-
-
-			numOfGrenades--;
-
-			GrenadeCounter = 0;
-
-            Debug.Log ("Throw grenade!!");
-
-
-		}
-
-        GrenadeCounter += Time.deltaTime;
-	}
-
-
-    */
-
-
-
-
-	public GameObject hitObject;
-
-
-	//Pick up GameObjects
-	void PickUpObject()
-	{
-
-		/*
-		RaycastHit hit;
-
-		if (Input.GetKey (KeyCode.P)) {
-
-
-
-			if(Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),hit))
-				{
-				hitObject = hit.collider.gameObject;
-				hitObject.transform.parent = gameObject.transform;
-
-				}
-
-			//Pick up the game object here
-		}
-
-		*/
-	}
-
-
 
 
 
