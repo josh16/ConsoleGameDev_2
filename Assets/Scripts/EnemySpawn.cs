@@ -7,7 +7,7 @@ public class EnemySpawn : MonoBehaviour {
 	[SerializeField] private GameObject enemyPrefab = null;
 	[SerializeField] private Transform enemySpawnPoint = null;
 
-	//Zach's script	
+	//Zach's and Jon's script	
 
 	void Update ()
 	{
@@ -28,16 +28,19 @@ public class EnemySpawn : MonoBehaviour {
 		{
 			// Shoot every "delay" seconds.
 			yield return new WaitForSeconds(delay);
-            spawn();
+           randSpawn();
 
 			
 		}
 	}
 
-	public void spawn(){
-		
-			enemies();
-
+	public void randSpawn(){
+		var num = Random.Range (1, 30);
+		if (num <= 15) {
+			enemies ();
+		} else {
+			return;
+		}
 	}
 
 
