@@ -9,6 +9,7 @@ using UnityEngine.Networking;
 public class Movement : NetworkBehaviour 
 {
 
+	//Animator anim;
 
 	public float rotate_speed = 100.0f;
 	public float speed = 10;
@@ -58,10 +59,11 @@ public class Movement : NetworkBehaviour
 
 		m_runeText = GameObject.Find("Canvas").transform.FindChild ("runetext").GetComponent<Text> ();
 
+	
 
 		if (isLocalPlayer) 
 		{
-
+			
 			return;
 		}
 
@@ -83,6 +85,7 @@ public class Movement : NetworkBehaviour
 			
 		if (Input.GetKeyDown (KeyCode.Space)) {
             InvokeRepeating("CmdKeyboardInput", 0.001f, ROF);
+
 		}
         if (Input.GetKeyUp(KeyCode.Space))
         {
@@ -111,6 +114,7 @@ public class Movement : NetworkBehaviour
 
 
 		float hAxis = Input.GetAxis ("Horizontal");
+
 		float vAxis = Input.GetAxis ("Vertical");	
 
 
@@ -120,18 +124,23 @@ public class Movement : NetworkBehaviour
 	[Command]
 	void CmdgameController()
 	{
-
+		//anim.SetBool ("isRun", true);
 		if (isLocalPlayer) 
 		{
 
 			//Movement Code
 			float hAxis = Input.GetAxis ("Horizontal");
+
+
+
 			float vAxis = Input.GetAxis ("Vertical");
+		
 
 			float rStickX = Input.GetAxis("PS4_RightStickX");
 
 
 			Vector3 movement = transform.TransformDirection (new Vector3 (hAxis, 0, vAxis) * speed * Time.deltaTime);
+
 
 			rb.MovePosition (transform.position + movement);
 

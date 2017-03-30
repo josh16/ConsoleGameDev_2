@@ -36,9 +36,10 @@ public class EnemyHealth : MonoBehaviour
 			AudioSource.PlayClipAtPoint(Scream,transform.position);
 			currentHealth -= PlayerBullet;
 
+			Debug.Log("BULLET!!! hit!!");
 			//AudioSource.PlayClipAtPoint(Scream, transform.position);
 
-			Debug.Log("Zambie hit!!");
+
 		}
 
 		//Grenade damage code
@@ -47,7 +48,7 @@ public class EnemyHealth : MonoBehaviour
 			//Scream.PlayOneShot(sound, 0.8f);
 			currentHealth -= PlayerGrenade;
 
-			Debug.Log("Zambie hit!!");
+			Debug.Log("GRENADE!! hit!!");
 		}
 
 
