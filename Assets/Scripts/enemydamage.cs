@@ -15,7 +15,7 @@ public class enemydamage : MonoBehaviour
     {
 
         //grabbing the score text 
-        m_scoreText = GameObject.Find("UI_Canvas").transform.FindChild("numbers").GetComponent<Text>();
+         m_scoreText = GameObject.Find("UI_Canvas").transform.FindChild("numbers").GetComponent<Text>();
 
         //m_score = 0;
     }
