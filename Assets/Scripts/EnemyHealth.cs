@@ -13,6 +13,9 @@ public class EnemyHealth : MonoBehaviour
 	//public AudioClip Explosion;
 	public AudioClip Scream;
 
+	//Particle effects
+	public ParticleSystem bloodSquirt;
+
 
 
 	//Audio files
@@ -23,6 +26,19 @@ public class EnemyHealth : MonoBehaviour
 	//public GameObject Explode;
 
 	//Josh's Script
+
+
+
+	// Use this for initialization
+	void Start () 
+	{
+		bloodSquirt = GetComponent<ParticleSystem> ();
+	}
+
+	// Update is called once per frame
+	void Update () {
+
+	}
 
 
 	void OnTriggerEnter(Collider raptor)
@@ -57,6 +73,9 @@ public class EnemyHealth : MonoBehaviour
 		{
 			//AudioSource.PlayClipAtPoint(Explosion,transform.position);
 
+			//Blood Particle effect
+			bloodSquirt.Play();
+
 			Destroy (this.gameObject);
 
 			Debug.Log ("Raptor is DEAD!!!");
@@ -80,14 +99,5 @@ public class EnemyHealth : MonoBehaviour
 
 
 
-	// Use this for initialization
-	void Start () 
-	{
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+
 }
