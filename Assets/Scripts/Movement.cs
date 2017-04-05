@@ -57,7 +57,7 @@ public class Movement : NetworkBehaviour
 	{
 		rb = GetComponent<Rigidbody> ();
 
-		m_runeText = GameObject.Find("Canvas").transform.FindChild ("runetext").GetComponent<Text> ();
+		//m_runeText = GameObject.Find("Canvas").transform.FindChild ("runetext").GetComponent<Text> ();
 
 	
 
