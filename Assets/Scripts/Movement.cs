@@ -55,11 +55,9 @@ public class Movement : NetworkBehaviour
 	// Use this for initialization
 	void Start () 
 	{
+		//reference to player Rigidbody
 		rb = GetComponent<Rigidbody> ();
 
-		//m_runeText = GameObject.Find("Canvas").transform.FindChild ("runetext").GetComponent<Text> ();
-
-	
 
 		if (isLocalPlayer) 
 		{
