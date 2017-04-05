@@ -5,7 +5,7 @@ public class EnemyHealth : MonoBehaviour
 {
 	//Health Variables
 	public float currentHealth = 100;
-	public float PlayerBullet = 25.0f;
+	public float PlayerBullet = 20.0f;
 	public float PlayerGrenade = 50.0f;
 
 
@@ -25,45 +25,46 @@ public class EnemyHealth : MonoBehaviour
 	//Josh's Script
 
 
-	void OnTriggerEnter(Collider zambie)
+	void OnTriggerEnter(Collider raptor)
 	{
 
 		//Bullet damage code
-		if (zambie.gameObject.CompareTag ("Bullet")) 
+		if (raptor.gameObject.CompareTag ("Bullet")) 
 		{
 			
 			//Scream.PlayOneShot(sound, 0.8f);
 			AudioSource.PlayClipAtPoint(Scream,transform.position);
 			currentHealth -= PlayerBullet;
 
+			Debug.Log("Hit by Bullet!");
 			//AudioSource.PlayClipAtPoint(Scream, transform.position);
 
-			Debug.Log("Zambie hit!!");
+
 		}
 
 		//Grenade damage code
-		if (zambie.gameObject.CompareTag ("Grenade")) 
+		if (raptor.gameObject.CompareTag ("Grenade")) 
 		{
 			//Scream.PlayOneShot(sound, 0.8f);
 			currentHealth -= PlayerGrenade;
 
-			Debug.Log("Zambie hit!!");
+			Debug.Log("Hit by Grenade!");
 		}
 
 
-		//Zambie Death
+		//Raptop Death
 		if (currentHealth <= 0.0f) 
 		{
 			//AudioSource.PlayClipAtPoint(Explosion,transform.position);
 
 			Destroy (this.gameObject);
 
-			Debug.Log ("Zambie is DEAD!!!");
+			Debug.Log ("Raptor is DEAD!!!");
 		}
 	
 	
 
-		if(zambie.gameObject.CompareTag("Player"))
+		if(raptor.gameObject.CompareTag("Player"))
 		{
 			
 			Destroy (this.gameObject);
