@@ -12,8 +12,15 @@ public class RunePlayerScript : MonoBehaviour
 
 
 
-	//Light Reference
+	//Light Transforms
+	public Transform LightSpawner;
+	public Transform LightSpawner2;
+	public Transform LightSpawner3;
+
+	//Light GameObjects
 	public GameObject greenLight;
+	public GameObject yellowLight;
+	public GameObject blueLight;
 
 	// ---------------  green rune --------------------------------//
 	// text updating the green runes status
@@ -137,7 +144,7 @@ public class RunePlayerScript : MonoBehaviour
 		if(other.gameObject.CompareTag("GreenRuneDropOff") && m_greenPickedUp == true)
 		{
 			// play dropping off sound
-			greenLight.SetActive (true);
+			greenLight = Instantiate(greenLight,LightSpawner.position,LightSpawner.rotation);
 			m_greenDroppedOff = true;
 			m_greenPickedUp = false;
 			// change text saying green rune activated
@@ -152,6 +159,7 @@ public class RunePlayerScript : MonoBehaviour
 		if (other.gameObject.CompareTag("BlueRuneDropOff") && m_bluePickedUp == true)
 		{
 			// play dropping off sound
+			blueLight = Instantiate(blueLight,LightSpawner3.position,LightSpawner3.rotation);
 			m_blueDroppedOff = true;
 			m_bluePickedUp = false;
 			// change text saying green rune activated
@@ -164,6 +172,7 @@ public class RunePlayerScript : MonoBehaviour
 		if (other.gameObject.CompareTag("YellowRuneDropOff") && m_yellowPickedUp == true)
 		{
 			// play dropping off sound
+			yellowLight = Instantiate(yellowLight,LightSpawner2.position,LightSpawner2.rotation);
 			m_yellowDroppedOff = true;
 			m_yellowPickedUp = false;
 			// change text saying green rune activated
