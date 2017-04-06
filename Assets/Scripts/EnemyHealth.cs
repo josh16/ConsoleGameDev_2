@@ -14,7 +14,9 @@ public class EnemyHealth : MonoBehaviour
 	public AudioClip Scream;
 
 	//Particle effects
-	public ParticleSystem bloodSquirt;
+	//public ParticleSystem bloodSquirt;
+
+
 
 
 
@@ -32,7 +34,7 @@ public class EnemyHealth : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-		bloodSquirt = GetComponent<ParticleSystem> ();
+		//bloodSquirt = GetComponent<ParticleSystem> ();
 	}
 
 	// Update is called once per frame
@@ -74,7 +76,7 @@ public class EnemyHealth : MonoBehaviour
 			//AudioSource.PlayClipAtPoint(Explosion,transform.position);
 
 			//Blood Particle effect
-			bloodSquirt.Play();
+			//bloodSquirt.Play();
 
 			Destroy (this.gameObject);
 

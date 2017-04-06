@@ -11,6 +11,10 @@ public class RunePlayerScript : MonoBehaviour
 	public AudioClip RuneDropOff;
 
 
+
+	//Light Reference
+	public GameObject greenLight;
+
 	// ---------------  green rune --------------------------------//
 	// text updating the green runes status
 	public Text m_greenRuneText;
@@ -78,6 +82,8 @@ public class RunePlayerScript : MonoBehaviour
 		m_yellowRuneText = GameObject.Find("Canvas").transform.FindChild("yellowtext").GetComponent<Text>();
 		m_blueRuneText = GameObject.Find("Canvas").transform.FindChild("bluetext").GetComponent<Text>();
 
+
+	
 	}
 
 
@@ -131,12 +137,15 @@ public class RunePlayerScript : MonoBehaviour
 		if(other.gameObject.CompareTag("GreenRuneDropOff") && m_greenPickedUp == true)
 		{
 			// play dropping off sound
+			greenLight.SetActive (true);
 			m_greenDroppedOff = true;
 			m_greenPickedUp = false;
 			// change text saying green rune activated
 			AudioSource.PlayClipAtPoint(RuneDropOff, transform.position);
 			m_greenRuneText.color = Color.green;
+
 			m_greenRuneText.text = "Green Rune Activated!";
+
 			Debug.Log("green rune dropped off");
 
 		}
