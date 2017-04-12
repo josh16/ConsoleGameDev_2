@@ -13,8 +13,9 @@ public class EnemyHealth : MonoBehaviour
 	//public AudioClip Explosion;
 	public AudioClip Scream;
 
-	//Particle effects
-	//public ParticleSystem bloodSquirt;
+	//Rapto Death Particle effect
+	public Transform bloodSpawner;
+	public GameObject bloodSquirt;
 
 
 
@@ -54,6 +55,7 @@ public class EnemyHealth : MonoBehaviour
 			AudioSource.PlayClipAtPoint(Scream,transform.position);
 			currentHealth -= PlayerBullet;
 
+
 			Debug.Log("Hit by Bullet!");
 			//AudioSource.PlayClipAtPoint(Scream, transform.position);
 
@@ -74,9 +76,9 @@ public class EnemyHealth : MonoBehaviour
 		if (currentHealth <= 0.0f) 
 		{
 			//AudioSource.PlayClipAtPoint(Explosion,transform.position);
+			bloodSquirt = Instantiate(bloodSquirt, bloodSpawner.position, bloodSpawner.rotation);
 
-			//Blood Particle effect
-			//bloodSquirt.Play();
+
 
 			Destroy (this.gameObject);
 

@@ -11,6 +11,8 @@ public class EnemyScript : MonoBehaviour {
 		var hit = collision.gameObject; // Collides with gameobject
 		var health = hit.GetComponent<PlayerHealth> ();// calling the PlayerHealth script
 
+
+
 		//Taking Damage
 		if (health != null) {
 
