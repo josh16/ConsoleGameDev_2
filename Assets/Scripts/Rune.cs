@@ -5,6 +5,7 @@ using UnityEngine;
 public class Rune : MonoBehaviour
 {
 
+
     // Spawner
     [SerializeField]
     private GameObject m_runeSpawner;
@@ -33,10 +34,11 @@ public class Rune : MonoBehaviour
     // counts runes
     public int m_runeCounter;
 
-    // bool check to see if rune spawned
+    // bool check to see if spawned
     public bool m_isSpawned = true;
 
-    
+    // when rune is picked up
+    public bool m_isRunePickedUp = false;
 
     // when placed at the rune spot
     public bool m_isRunePlaced = false;
@@ -45,31 +47,25 @@ public class Rune : MonoBehaviour
     public bool m_isRuneActive = false;
 
 
+    private void Update()
+    {
+        SpawnRune();
 
+    }
 
-
-	private void Start()
-	{
-		SpawnRune();
-
-	}
-
- 
 
     private IEnumerator RuneSpawnCoroutine()
     {
 
-		while(m_isSpawned)
+        while(true)
         {
-			Debug.Log ("rune spawned");
             // creating object
             GameObject rune = Instantiate(m_rune1) as GameObject;
 
             rune.transform.position = m_runeSpawner.transform.position;
             rune.transform.rotation = m_runeSpawner.transform.rotation;
 
-            //m_isRuneActive = true;
-			m_isSpawned = false;
+            m_isRuneActive = true;
             yield return new WaitForSeconds(m_spawnTime);
         }
     }
@@ -78,13 +74,10 @@ public class Rune : MonoBehaviour
 
     public void SpawnRune()
     {
-		if (m_isSpawned) {
-			StartCoroutine (RuneSpawnCoroutine ());
-		}
-		else
-		{
-			StopCoroutine (RuneSpawnCoroutine());
-		}
+        if(m_isSpawned)
+        {
+            StartCoroutine(RuneSpawnCoroutine());
+        }
 
     }
 
@@ -94,12 +87,15 @@ public class Rune : MonoBehaviour
     {
         if(other.gameObject.CompareTag ("Player"))
         {
-			Debug.Log ("Stopped spawning");
+            Destroy(m_rune1);
             m_runeCounter++;
-			StopCoroutine (RuneSpawnCoroutine());
-        
+            Debug.Log("Rune picked up!!");
+            m_isRunePickedUp = true;
+            m_isRuneActive = false;
         }
     }
+
+
 
 
 
