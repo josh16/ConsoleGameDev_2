@@ -9,7 +9,7 @@ public class PlayerHealth : NetworkBehaviour {
 	//Health variables
 	public const int maxHealth = 100;
 	public const int healthPack = 20;
-	public const int enemyDmg = 10;
+
 
 	//Health Audio
 	public AudioClip medicalKit;
@@ -59,7 +59,7 @@ public class PlayerHealth : NetworkBehaviour {
 				
 			}
 	
-	
+		/*
 		if(other.gameObject.tag == "Enemy")
 			{
 
@@ -67,7 +67,8 @@ public class PlayerHealth : NetworkBehaviour {
 				
 					
 			}
-	}
+	*/
+}
 
 
 
