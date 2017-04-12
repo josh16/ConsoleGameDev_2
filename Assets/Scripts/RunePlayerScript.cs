@@ -16,11 +16,13 @@ public class RunePlayerScript : MonoBehaviour
 	public Transform LightSpawner;
 	public Transform LightSpawner2;
 	public Transform LightSpawner3;
+	public Transform RuneLightSpawner;
 
 	//Light GameObjects
 	public GameObject greenLight;
 	public GameObject yellowLight;
 	public GameObject blueLight;
+	public GameObject runeRedLight;
 
 	// ---------------  green rune --------------------------------//
 	// text updating the green runes status
@@ -188,6 +190,7 @@ public class RunePlayerScript : MonoBehaviour
 		{
 
 			m_greenRuneText.color = Color.white;
+			runeRedLight = Instantiate(runeRedLight,RuneLightSpawner.position,RuneLightSpawner.rotation);
 			m_greenRuneText.text = "DOOR IS UNLOCKED! \nPROCEED TO THE \nCENTER OF THE MAP!";
 			Destroy (m_blueRuneText);
 			Destroy (m_yellowRuneText);

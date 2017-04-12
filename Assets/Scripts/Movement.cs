@@ -19,7 +19,7 @@ public class Movement : NetworkBehaviour
 	//AudioFiles
 	public AudioClip Shoot;
 	public AudioClip hit;
-	//public AudioClip BossHit;
+
 
 	//Camera Reference
 	public Camera cam;
@@ -36,16 +36,17 @@ public class Movement : NetworkBehaviour
 	public GameObject grenadePrefab;
 	public Transform grenadeSpawn;
 	public float grenadeSpeed;
+	private float GrenadeCounter = 3;
 
-	//Text Variables
-	private float GrenadeCounter = 1.0f;
-	//public GUIText grenadeText;
+	//Grenade Text references
+	public Text grenadeText;
 
 
-	// rune counter
+
+	// Rune counter
 	public int m_runeCounter;
-
 	public Text m_runeText;
+
 
 
 	public float delayGrenadeTime = 5.0f;
@@ -57,6 +58,8 @@ public class Movement : NetworkBehaviour
 	{
 		//reference to player Rigidbody
 		rb = GetComponent<Rigidbody> ();
+		grenadeText = GameObject.Find("Canvas").transform.FindChild("grenadeText").GetComponent<Text>();
+
 
 
 		if (isLocalPlayer) 
@@ -73,7 +76,8 @@ public class Movement : NetworkBehaviour
     // Update is called once per frame
 	void Update () 
 	{
-		
+		grenadeText.text = "Grenades: ";
+
 		//check for isLocalPlayer in the Update function, so that only the local player processes input.
 		if (!isLocalPlayer)
 		{
@@ -197,7 +201,7 @@ public class Movement : NetworkBehaviour
 
 			Destroy(grenadePrefab,2.0f);
 
-			//numOfGrenades--;
+			
 			GrenadeCounter--;
 
         delayGrenadeTime += Time.deltaTime;
@@ -270,7 +274,7 @@ public class Movement : NetworkBehaviour
 			//Networking the bulletPrefab :)
 
 			AudioSource.PlayClipAtPoint(Shoot,transform.position);
-			//counter = 0;
+			
 
 
 	}
