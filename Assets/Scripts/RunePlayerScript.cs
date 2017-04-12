@@ -11,6 +11,19 @@ public class RunePlayerScript : MonoBehaviour
 	public AudioClip RuneDropOff;
 
 
+
+	//Light Transforms
+	public Transform LightSpawner;
+	public Transform LightSpawner2;
+	public Transform LightSpawner3;
+	public Transform RuneLightSpawner;
+
+	//Light GameObjects
+	public GameObject greenLight;
+	public GameObject yellowLight;
+	public GameObject blueLight;
+	public GameObject runeRedLight;
+
 	// ---------------  green rune --------------------------------//
 	// text updating the green runes status
 	public Text m_greenRuneText;
@@ -78,6 +91,8 @@ public class RunePlayerScript : MonoBehaviour
 		m_yellowRuneText = GameObject.Find("Canvas").transform.FindChild("yellowtext").GetComponent<Text>();
 		m_blueRuneText = GameObject.Find("Canvas").transform.FindChild("bluetext").GetComponent<Text>();
 
+
+	
 	}
 
 
@@ -131,18 +146,22 @@ public class RunePlayerScript : MonoBehaviour
 		if(other.gameObject.CompareTag("GreenRuneDropOff") && m_greenPickedUp == true)
 		{
 			// play dropping off sound
+			greenLight = Instantiate(greenLight,LightSpawner.position,LightSpawner.rotation);
 			m_greenDroppedOff = true;
 			m_greenPickedUp = false;
 			// change text saying green rune activated
 			AudioSource.PlayClipAtPoint(RuneDropOff, transform.position);
 			m_greenRuneText.color = Color.green;
+
 			m_greenRuneText.text = "Green Rune Activated!";
+
 			Debug.Log("green rune dropped off");
 
 		}
 		if (other.gameObject.CompareTag("BlueRuneDropOff") && m_bluePickedUp == true)
 		{
 			// play dropping off sound
+			blueLight = Instantiate(blueLight,LightSpawner3.position,LightSpawner3.rotation);
 			m_blueDroppedOff = true;
 			m_bluePickedUp = false;
 			// change text saying green rune activated
@@ -155,6 +174,7 @@ public class RunePlayerScript : MonoBehaviour
 		if (other.gameObject.CompareTag("YellowRuneDropOff") && m_yellowPickedUp == true)
 		{
 			// play dropping off sound
+			yellowLight = Instantiate(yellowLight,LightSpawner2.position,LightSpawner2.rotation);
 			m_yellowDroppedOff = true;
 			m_yellowPickedUp = false;
 			// change text saying green rune activated
@@ -170,6 +190,7 @@ public class RunePlayerScript : MonoBehaviour
 		{
 
 			m_greenRuneText.color = Color.white;
+			runeRedLight = Instantiate(runeRedLight,RuneLightSpawner.position,RuneLightSpawner.rotation);
 			m_greenRuneText.text = "DOOR IS UNLOCKED! \nPROCEED TO THE \nCENTER OF THE MAP!";
 			Destroy (m_blueRuneText);
 			Destroy (m_yellowRuneText);
