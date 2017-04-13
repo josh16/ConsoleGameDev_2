@@ -19,7 +19,7 @@ public class Movement : NetworkBehaviour
 	//AudioFiles
 	public AudioClip Shoot;
 	public AudioClip hit;
-	//public AudioClip BossHit;
+
 
 	//Camera Reference
 	public Camera cam;
@@ -31,33 +31,32 @@ public class Movement : NetworkBehaviour
 	public float delayTime = 1.0f;
 	private float counter = 0;
 	public float bulletSpeed;
+	public float ROF = 0.1f; //Rate of fire for bullets
 
 	//Grenade Variables
 	public GameObject grenadePrefab;
 	public Transform grenadeSpawn;
 	public float grenadeSpeed;
 
-	//Text Variables
-	private float GrenadeCounter = 1.0f;
-	//public GUIText grenadeText;
+	//Grenade text references
+	public float delayGrenadeTime = 5.0f;
+	public float numOfGrenades;
+	private float GrenadeCounter = 3;
 
 
-	// rune counter
+
+	// Rune counter
 	public int m_runeCounter;
-
 	public Text m_runeText;
 
 
-	public float delayGrenadeTime = 5.0f;
-	public float numOfGrenades;
-    public float ROF = 0.1f;
+
 
 	// Use this for initialization
 	void Start () 
 	{
 		//reference to player Rigidbody
 		rb = GetComponent<Rigidbody> ();
-
 
 		if (isLocalPlayer) 
 		{
@@ -73,11 +72,13 @@ public class Movement : NetworkBehaviour
     // Update is called once per frame
 	void Update () 
 	{
-		
+		//grenadeText.text = "Grenades: ";
+
 		//check for isLocalPlayer in the Update function, so that only the local player processes input.
 		if (!isLocalPlayer)
 		{
 			return;
+
 
 		}
 			
@@ -98,6 +99,8 @@ public class Movement : NetworkBehaviour
 		if (Input.GetButtonUp ("PS4_R1")) {
 
 			CancelInvoke("CmdGun");
+
+			
 		}
 
 
@@ -197,13 +200,11 @@ public class Movement : NetworkBehaviour
 
 			Destroy(grenadePrefab,2.0f);
 
-			//numOfGrenades--;
-			GrenadeCounter--;
-
+			
         delayGrenadeTime += Time.deltaTime;
     }
     
-	
+
 
 
 	//Trigger Codes
@@ -270,7 +271,7 @@ public class Movement : NetworkBehaviour
 			//Networking the bulletPrefab :)
 
 			AudioSource.PlayClipAtPoint(Shoot,transform.position);
-			//counter = 0;
+			
 
 
 	}
