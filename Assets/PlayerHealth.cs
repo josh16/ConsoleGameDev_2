@@ -10,6 +10,7 @@ public class PlayerHealth : NetworkBehaviour {
 	public const int maxHealth = 100;
 	public const int healthPack = 20;
 
+
 	//Health Audio
 	public AudioClip medicalKit;
 
@@ -57,7 +58,17 @@ public class PlayerHealth : NetworkBehaviour {
 			AudioSource.PlayClipAtPoint (medicalKit, transform.position);
 				
 			}
-	}
+	
+		/*
+		if(other.gameObject.tag == "Enemy")
+			{
+
+			currentHealth -= enemyDmg;
+				
+					
+			}
+	*/
+}
 
 
 

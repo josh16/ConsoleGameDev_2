@@ -9,6 +9,7 @@ using UnityEngine.Networking;
 public class Movement : NetworkBehaviour 
 {
 
+	//Animator anim;
 
 	public float rotate_speed = 100.0f;
 	public float speed = 10;
@@ -18,7 +19,7 @@ public class Movement : NetworkBehaviour
 	//AudioFiles
 	public AudioClip Shoot;
 	public AudioClip hit;
-	//public AudioClip BossHit;
+
 
 	//Camera Reference
 	public Camera cam;
@@ -35,16 +36,17 @@ public class Movement : NetworkBehaviour
 	public GameObject grenadePrefab;
 	public Transform grenadeSpawn;
 	public float grenadeSpeed;
+	private float GrenadeCounter = 3;
 
-	//Text Variables
-	private float GrenadeCounter = 1.0f;
-	//public GUIText grenadeText;
+	//Grenade Text references
+	public Text grenadeText;
 
 
-	// rune counter
+
+	// Rune counter
 	public int m_runeCounter;
-
 	public Text m_runeText;
+
 
 
 	public float delayGrenadeTime = 5.0f;
@@ -54,14 +56,15 @@ public class Movement : NetworkBehaviour
 	// Use this for initialization
 	void Start () 
 	{
+		//reference to player Rigidbody
 		rb = GetComponent<Rigidbody> ();
+		grenadeText = GameObject.Find("Canvas").transform.FindChild("grenadeText").GetComponent<Text>();
 
-		m_runeText = GameObject.Find("Canvas").transform.FindChild ("runetext").GetComponent<Text> ();
 
 
 		if (isLocalPlayer) 
 		{
-
+			
 			return;
 		}
 
@@ -73,7 +76,8 @@ public class Movement : NetworkBehaviour
     // Update is called once per frame
 	void Update () 
 	{
-		
+		grenadeText.text = "Grenades: ";
+
 		//check for isLocalPlayer in the Update function, so that only the local player processes input.
 		if (!isLocalPlayer)
 		{
@@ -83,6 +87,7 @@ public class Movement : NetworkBehaviour
 			
 		if (Input.GetKeyDown (KeyCode.Space)) {
             InvokeRepeating("CmdKeyboardInput", 0.001f, ROF);
+
 		}
         if (Input.GetKeyUp(KeyCode.Space))
         {
@@ -111,6 +116,7 @@ public class Movement : NetworkBehaviour
 
 
 		float hAxis = Input.GetAxis ("Horizontal");
+
 		float vAxis = Input.GetAxis ("Vertical");	
 
 
@@ -120,18 +126,23 @@ public class Movement : NetworkBehaviour
 	[Command]
 	void CmdgameController()
 	{
-
+		//anim.SetBool ("isRun", true);
 		if (isLocalPlayer) 
 		{
 
 			//Movement Code
 			float hAxis = Input.GetAxis ("Horizontal");
+
+
+
 			float vAxis = Input.GetAxis ("Vertical");
+		
 
 			float rStickX = Input.GetAxis("PS4_RightStickX");
 
 
 			Vector3 movement = transform.TransformDirection (new Vector3 (hAxis, 0, vAxis) * speed * Time.deltaTime);
+
 
 			rb.MovePosition (transform.position + movement);
 
@@ -190,7 +201,7 @@ public class Movement : NetworkBehaviour
 
 			Destroy(grenadePrefab,2.0f);
 
-			//numOfGrenades--;
+			
 			GrenadeCounter--;
 
         delayGrenadeTime += Time.deltaTime;
@@ -263,7 +274,7 @@ public class Movement : NetworkBehaviour
 			//Networking the bulletPrefab :)
 
 			AudioSource.PlayClipAtPoint(Shoot,transform.position);
-			//counter = 0;
+			
 
 
 	}
