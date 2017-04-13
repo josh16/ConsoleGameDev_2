@@ -31,15 +31,17 @@ public class Movement : NetworkBehaviour
 	public float delayTime = 1.0f;
 	private float counter = 0;
 	public float bulletSpeed;
+	public float ROF = 0.1f; //Rate of fire for bullets
 
 	//Grenade Variables
 	public GameObject grenadePrefab;
 	public Transform grenadeSpawn;
 	public float grenadeSpeed;
-	private float GrenadeCounter = 3;
 
-	//Grenade Text references
-	public Text grenadeText;
+	//Grenade text references
+	public float delayGrenadeTime = 5.0f;
+	public float numOfGrenades;
+	private float GrenadeCounter = 3;
 
 
 
@@ -49,18 +51,12 @@ public class Movement : NetworkBehaviour
 
 
 
-	public float delayGrenadeTime = 5.0f;
-	public float numOfGrenades;
-    public float ROF = 0.1f;
 
 	// Use this for initialization
 	void Start () 
 	{
 		//reference to player Rigidbody
 		rb = GetComponent<Rigidbody> ();
-		grenadeText = GameObject.Find("Canvas").transform.FindChild("grenadeText").GetComponent<Text>();
-
-
 
 		if (isLocalPlayer) 
 		{
@@ -76,12 +72,13 @@ public class Movement : NetworkBehaviour
     // Update is called once per frame
 	void Update () 
 	{
-		grenadeText.text = "Grenades: ";
+		//grenadeText.text = "Grenades: ";
 
 		//check for isLocalPlayer in the Update function, so that only the local player processes input.
 		if (!isLocalPlayer)
 		{
 			return;
+
 
 		}
 			
@@ -102,6 +99,8 @@ public class Movement : NetworkBehaviour
 		if (Input.GetButtonUp ("PS4_R1")) {
 
 			CancelInvoke("CmdGun");
+
+			
 		}
 
 
@@ -202,12 +201,10 @@ public class Movement : NetworkBehaviour
 			Destroy(grenadePrefab,2.0f);
 
 			
-			GrenadeCounter--;
-
         delayGrenadeTime += Time.deltaTime;
     }
     
-	
+
 
 
 	//Trigger Codes
